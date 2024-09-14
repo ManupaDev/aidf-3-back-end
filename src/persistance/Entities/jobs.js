@@ -31,6 +31,6 @@ const jobsSchema = new Schema({
 })
 
 
-const Job = mongoose.model('Job',jobsSchema);
+const Job = mongoose.model('Job',jobsSchema);  //DAO 
 
 export default Job;
