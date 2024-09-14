@@ -1,7 +1,10 @@
+import Job from "../persistance/Entities/jobs.js";
+
 const jobs = [
   {
     _id: "xyz",
     title: "Intern - Software Engineer",
+    description: "lorem23",
     type: "Full-time",
     location: "Remote",
     questions: [
@@ -34,13 +37,17 @@ const jobs = [
   },
 ];
 
-export const getAllJobs = (req, res) => {
-  return res.status(200).json(jobs);
+export const getAllJobs =async (req, res) => {
+  const alljobs = await Job.find()
+  return res.status(200).json(alljobs);
 };
 
-export const createJob = (req, res) => {
-  const job = req.body;
-  jobs.push(job);
-
-  return res.status(201).send();
+export const createJob = async (req, res) => {
+  try {
+    const job = req.body;
+    await Job.create(job);
+    return res.status(201).send();
+  } catch (error) {
+    console.log(error);
+  }
 };
