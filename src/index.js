@@ -12,11 +12,6 @@ app.use(cors({ origin: "http://localhost:5173" }));
 
 connectDB();
 
-// app.use((req, res, next) => {
-//   console.log("HI from the top level middleware");
-//   next();
-// });
-
 app.use("/api/jobs", jobsRouter);
 app.use("/api/jobapplications", jobApplicationsRouter);
 
