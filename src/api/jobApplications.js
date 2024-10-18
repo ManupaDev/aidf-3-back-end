@@ -17,4 +17,6 @@ jobApplicationsRouter
     getAllJobApplications
   );
 
+jobApplicationsRouter.route("/:id").get(getJobApplicationById);  
+
 export default jobApplicationsRouter;

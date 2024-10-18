@@ -1,10 +1,18 @@
 import ValidationError from "../domain/errors/validation-error.js";
 import JobApplication from "../persistance/entities/jobApplications.js";
 import { JobApplicationDTO } from "./dto/jopApplications.js";
-import { clerkClient } from "@clerk/clerk-sdk-node";
 
 export const getAllJobApplications = async (req, res, next) => {
   try {
+    //?jobId=${jobId}
+    const { jobId } = req.query;
+    if (jobId) {
+      const jobApplications = await JobApplication.find({ job: jobId })
+        .populate("job", ["title", "description"])
+        .exec();
+      return res.status(200).json(jobApplications);
+    }
+
     const jobApplications = await JobApplication.find()
       .populate("job", ["title", "description"])
       .exec();
@@ -30,6 +38,22 @@ export const createJobApplication = async (req, res, next) => {
 
     await JobApplication.create({ ...jobApplication.data, userId: userId });
     return res.status(201).send();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getJobApplicationById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const jobApplication = await JobApplication.findById(id).populate("job", [
+      "title",
+      "description",
+    ]);
+    if (jobApplication === null) {
+      throw new NotFoundError("Job Application not found");
+    }
+    return res.status(200).json(jobApplication);
   } catch (error) {
     next(error);
   }
