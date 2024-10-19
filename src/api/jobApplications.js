@@ -5,6 +5,7 @@ import {
 } from "./../application/jobApplications.js";
 import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 import AuthorizationMiddleware from "./middleware/authorization-middleware.js";
+import { getJobApplicationById } from "./../application/jobApplications.js";
 
 const jobApplicationsRouter = express.Router();
 
@@ -17,6 +18,12 @@ jobApplicationsRouter
     getAllJobApplications
   );
 
-jobApplicationsRouter.route("/:id").get(getJobApplicationById);  
+jobApplicationsRouter
+  .route("/:id")
+  .get(
+    ClerkExpressRequireAuth({}),
+    AuthorizationMiddleware,
+    getJobApplicationById
+  );
 
 export default jobApplicationsRouter;
