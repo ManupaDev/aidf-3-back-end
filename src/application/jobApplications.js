@@ -36,7 +36,13 @@ export const createJobApplication = async (req, res, next) => {
       throw new ValidationError(jobApplication.error);
     }
 
-    await JobApplication.create({ ...jobApplication.data, userId: userId });
+    const createdJobApplication = await JobApplication.create({ ...jobApplication.data, userId: userId });
+    //to generate rating
+    //const rating = generateRating(createdJobApplication)
+
+    
+    
+
     return res.status(201).send();
   } catch (error) {
     next(error);
